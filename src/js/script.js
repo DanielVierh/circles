@@ -110,7 +110,7 @@ function handleParticles() {
             i--;
             live--;
             lbl_live.innerHTML = `♥️ ${live}`;
-            if(live === -1) {
+            if(live === 0) {
                 document.getElementById('modal').classList.add('active');
                 is_playing = false;
             }
