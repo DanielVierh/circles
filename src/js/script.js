@@ -7,7 +7,7 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 let particleArray = [];
 let counter = 0;
-let spawnInterval = 150;
+let spawnInterval = 100;
 let live = 30;
 let points = 0;
 let is_playing = true;
@@ -36,6 +36,10 @@ canvas.addEventListener('click', (e)=> {
             particleArray.splice(i, 1);
             i--;
             spawnInterval--;
+            if(spawnInterval <= 5) {
+                spawnInterval = 5;  
+                console.log('spawnInterval', spawnInterval);
+            }
             points++;
             lbl_points.innerHTML = `${points} Punkte`
         }
@@ -48,7 +52,7 @@ class Particle {
     constructor(color, imageSrc) {
         this.color = color;
         this.x = Math.random() * canvas.width;
-        this.y =  Math.random() * (canvas.height - 600);
+        this.y =  0;
         this.size = Math.random() * 15 + 5;
         this.speedY = Math.random() * 1;
         this.imageSrc = imageSrc;
