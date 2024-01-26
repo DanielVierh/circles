@@ -1,5 +1,7 @@
 let canvas = document.getElementById('canvas1');
 let ctx = canvas.getContext('2d');
+const lbl_points = document.getElementById('lbl_points');
+const lbl_live = document.getElementById('lbl_live');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 let particleArray = [];
@@ -21,7 +23,6 @@ let mouse = {
 canvas.addEventListener('click', (e)=> {
     mouse.x = e.x;
     mouse.y = e.y;
-
     // Squash circles
     for(let i = 0; i < particleArray.length; i++) {
 
@@ -29,27 +30,35 @@ canvas.addEventListener('click', (e)=> {
             mouse.x + 30 > particleArray[i].x &&
             mouse.y < particleArray[i].y + 20 &&
             mouse.y + 30 > particleArray[i].y) {
-            
+            console.log('HIT');
             particleArray.splice(i, 1);
             i--;
             spawnInterval--;
-            console.log(spawnInterval);
         }
     }
-    
 })
 
 
 //* Klasse
 class Particle {
-    constructor(color) {
+    constructor(color, imageSrc) {
         this.color = color;
         this.x = Math.random() * canvas.width;
         this.y =  Math.random() * (canvas.height - 600);
         this.size = Math.random() * 15 + 5;
         this.speedY = Math.random() * 1;
-        this.id = uniqueID_Generator();
-        this.classList = 'Feffe'
+        this.imageSrc = imageSrc;
+        this.image = new Image();
+        this.image.onload = () => {
+            // Das Bild ist geladen, nachdem die onload-Funktion aufgerufen wurde
+            this.isImageLoaded = true;
+        };
+        this.image.onerror = (error) => {
+            // Es ist ein Fehler beim Laden des Bildes aufgetreten
+            console.error('Fehler beim Laden des Bildes:', error);
+        };
+        this.image.src = this.imageSrc;
+        this.isImageLoaded = false;
     }
 
     update() {
@@ -57,29 +66,19 @@ class Particle {
     }
 
     draw() {
-        ctx.fillStyle = this.color;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-    }
-
-    delete() {
-
+        // Überprüfen, ob das Bild geladen ist, bevor es gezeichnet wird
+        if (this.image.complete) {
+            ctx.drawImage(this.image, this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
+        } else {
+            // Wenn das Bild noch nicht geladen ist, fallback auf die Kreiszeichnung
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
     }
 }
 
-function uniqueID_Generator() {
-    const rndStuff = [
-        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q',
-        'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '$', '!', '1', '2', '3', '4', '8', '7',
-        '6', '5', '9', '0', '#',
-    ];
-    let key = '';
-    for (let i = 1; i <= 36; i++) {
-        key += rndStuff[parseInt(Math.random() * rndStuff.length)];
-    }
-    return key;
-}
 
 
 function handleParticles() {
@@ -91,6 +90,11 @@ function handleParticles() {
             particleArray.splice(i, 1);
             i--;
             console.log('oh oh');
+            live--;
+            lbl_live.innerHTML = `♥️: ${live}`;
+            if(live === -1) {
+                alert('GAME OVER')
+            }
         }
     }
 
@@ -103,7 +107,7 @@ function animate() {
 
     counter++;
     if(counter >= spawnInterval) {
-        particleArray.push(new Particle('blue'));
+        particleArray.push(new Particle('grey', 'src/images/asteorid.png'));
         counter = 0;
     }
    
@@ -112,3 +116,4 @@ function animate() {
 }
 
 animate();
+lbl_live.innerHTML = `♥️: ${live}`;

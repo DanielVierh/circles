@@ -7,6 +7,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    font-family: sans-serif;
 }
 
 #canvas1 {
@@ -16,4 +17,16 @@ body {
     height: 100%;
     top: 0;
     left: 0;
+}
+
+#lbl_live {
+    position: fixed;
+    left: 0;
+    top: 0;
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    background-color: black;
+    padding: 3px;
 }
