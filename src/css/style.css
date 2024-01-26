@@ -83,7 +83,7 @@ body {
         left: 50%;
         top: 70%;
         transform: translateX(-50%);
-        background: linear-gradient(black, grey);
+        background: linear-gradient(transparent, turquoise);
         padding: 10px;
         border-radius: 8px;
     }
