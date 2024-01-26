@@ -2,6 +2,7 @@ let canvas = document.getElementById('canvas1');
 let ctx = canvas.getContext('2d');
 const lbl_points = document.getElementById('lbl_points');
 const lbl_live = document.getElementById('lbl_live');
+const btn_restart = document.getElementById('btn_restart');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 let particleArray = [];
@@ -9,6 +10,8 @@ let counter = 0;
 let spawnInterval = 150;
 let live = 30;
 let points = 0;
+let is_playing = true;
+
 
 window.addEventListener('resize', ()=> {
     canvas.width = window.innerWidth;
@@ -30,7 +33,6 @@ canvas.addEventListener('click', (e)=> {
             mouse.x + 30 > particleArray[i].x &&
             mouse.y < particleArray[i].y + 20 &&
             mouse.y + 30 > particleArray[i].y) {
-            console.log('HIT');
             particleArray.splice(i, 1);
             i--;
             spawnInterval--;
@@ -62,10 +64,16 @@ class Particle {
     }
 
     update() {
+        if(!is_playing) {
+            return
+        }
         this.y += this.speedY;
     }
 
     draw() {
+        if(!is_playing) {
+            return
+        }
         // Überprüfen, ob das Bild geladen ist, bevor es gezeichnet wird
         if (this.image.complete) {
             ctx.drawImage(this.image, this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
@@ -89,11 +97,11 @@ function handleParticles() {
         if(particleArray[i].y >= canvas.height){
             particleArray.splice(i, 1);
             i--;
-            console.log('oh oh');
             live--;
             lbl_live.innerHTML = `♥️: ${live}`;
             if(live === -1) {
-                alert('GAME OVER')
+                document.getElementById('modal').classList.add('active');
+                is_playing = false;
             }
         }
     }
@@ -117,3 +125,7 @@ function animate() {
 
 animate();
 lbl_live.innerHTML = `♥️: ${live}`;
+
+btn_restart.addEventListener('click', ()=> {
+    window.location.reload();
+})
