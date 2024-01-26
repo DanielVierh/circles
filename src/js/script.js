@@ -124,7 +124,7 @@ function animate() {
 
     counter++;
     if(counter >= spawnInterval) {
-        particleArray.push(new Particle('grey', 'src/images/asteorid.png'));
+        particleArray.push(new Particle('grey', 'src/images/mothership.png'));
         counter = 0;
     }
    
