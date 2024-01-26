@@ -36,6 +36,8 @@ canvas.addEventListener('click', (e)=> {
             particleArray.splice(i, 1);
             i--;
             spawnInterval--;
+            points++;
+            lbl_points.innerHTML = `${points} Punkte`
         }
     }
 })

@@ -31,6 +31,18 @@ body {
     padding: 3px;
 }
 
+#lbl_points {
+    position: fixed;
+    right: 0;
+    top: 0;
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    background-color: black;
+    padding: 3px;
+}
+
 #modal {
     opacity: 0;
     z-index: -1;
