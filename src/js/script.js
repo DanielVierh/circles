@@ -49,12 +49,14 @@ canvas.addEventListener('click', (e)=> {
     }
 })
 
+const min = (window.innerWidth * 0.2);
+const max = (window.innerWidth - (window.innerWidth * 0.2))
 
 //* Klasse
 class Particle {
     constructor(color, imageSrc) {
         this.color = color;
-        this.x = Math.random() * canvas.width;
+        this.x = Math.floor(Math.random() * max) + min;;
         this.y =  0;
         this.size = Math.random() * 15 + 5;
         this.speedY = Math.random() * 1;
