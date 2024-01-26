@@ -98,7 +98,7 @@ function handleParticles() {
             particleArray.splice(i, 1);
             i--;
             live--;
-            lbl_live.innerHTML = `♥️: ${live}`;
+            lbl_live.innerHTML = `♥️ ${live}`;
             if(live === -1) {
                 document.getElementById('modal').classList.add('active');
                 is_playing = false;
@@ -124,7 +124,7 @@ function animate() {
 }
 
 animate();
-lbl_live.innerHTML = `♥️: ${live}`;
+lbl_live.innerHTML = `♥️ ${live}`;
 
 btn_restart.addEventListener('click', ()=> {
     window.location.reload();
