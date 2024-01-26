@@ -38,10 +38,13 @@ canvas.addEventListener('click', (e)=> {
             spawnInterval--;
             if(spawnInterval <= 5) {
                 spawnInterval = 5;  
-                console.log('spawnInterval', spawnInterval);
             }
             points++;
-            lbl_points.innerHTML = `${points} Punkte`
+            if(points === 1) {
+                lbl_points.innerHTML = `${points} Punkt`
+            }else {
+                lbl_points.innerHTML = `${points} Punkte`
+            }
         }
     }
 })
