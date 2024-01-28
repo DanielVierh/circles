@@ -104,7 +104,7 @@ class Bullet {
     constructor() {
         this.x = canvas.width / 2;
         this.y = canvas.height;
-        this.size = 5;
+        this.size = 3;
         this.speedY = 3;
         this.color = 'yellow';
     }
@@ -128,9 +128,9 @@ class Bullet {
         for(let i = 0; i < particleArray.length; i++) {
 
             if( this.x < particleArray[i].x + 20 &&
-                this.x + 30 > particleArray[i].x &&
+                this.x > particleArray[i].x &&
                 this.y < particleArray[i].y + 20 &&
-                this.y + 30 > particleArray[i].y) {
+                this.y > particleArray[i].y) {
                 particleArray.splice(i, 1);
                 i--;
                 spawnInterval--;
