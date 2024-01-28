@@ -179,19 +179,16 @@ if(lastBullet > 2) {
     reachLeft = false;
     reachRight = true;
 }
-
 if(reachLeft === true && reachRight === false) {
-    lastBullet += .002;
+    lastBullet += .003;
 }
-
 if(reachLeft === false && reachRight === true) {
-    lastBullet -= .002;
+    lastBullet -= .003;
 }
-
-
     for(let i = 0; i < bulletArray.length; i++) {
         bulletArray[i].update();
         bulletArray[i].draw();
+        bulletArray[i].collisionDetection();
 
         if(bulletArray[i].y <= 0){
             bulletArray.splice(i, 1);
