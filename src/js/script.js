@@ -6,11 +6,13 @@ const btn_restart = document.getElementById('btn_restart');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 let particleArray = [];
+let bulletArray = [];
 let counter = 0;
 let spawnInterval = 80;
 let live = 30;
 let points = 0;
 let is_playing = true;
+let bulletCounter = 0;
 
 
 window.addEventListener('resize', ()=> {
@@ -97,6 +99,51 @@ class Particle {
         }
     }
 }
+let lastBullet = 0;
+class Bullet {
+    constructor() {
+        this.x = canvas.width / 2;
+        this.y = canvas.height;
+        this.size = 5;
+        this.speedY = 2;
+        this.color = 'yellow';
+    }
+
+    update() {
+        this.y -= this.speedY;
+        this.x += lastBullet;
+    }
+
+    draw() {
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
+    collisionDetection() {
+        for(let i = 0; i < particleArray.length; i++) {
+
+            if( this.x < particleArray[i].x + 20 &&
+                this.x + 30 > particleArray[i].x &&
+                this.y < particleArray[i].y + 20 &&
+                this.y + 30 > particleArray[i].y) {
+                particleArray.splice(i, 1);
+                i--;
+                spawnInterval--;
+                if(spawnInterval <= 5) {
+                    spawnInterval = 5;  
+                }
+                points++;
+                if(points === 1) {
+                    lbl_points.innerHTML = `${points} Punkt`
+                }else {
+                    lbl_points.innerHTML = `${points} Punkte`
+                }
+            }
+        }
+    }
+}
 
 
 
@@ -116,7 +163,41 @@ function handleParticles() {
             }
         }
     }
+}
 
+let reachLeft = true;
+let reachRight = false;
+
+function handleBullets() {
+  
+if(lastBullet < -2) {
+    reachLeft = true;
+    reachRight = false;
+}
+
+if(lastBullet > 2) {
+    reachLeft = false;
+    reachRight = true;
+}
+
+if(reachLeft === true && reachRight === false) {
+    lastBullet += .002;
+}
+
+if(reachLeft === false && reachRight === true) {
+    lastBullet -= .002;
+}
+
+
+    for(let i = 0; i < bulletArray.length; i++) {
+        bulletArray[i].update();
+        bulletArray[i].draw();
+
+        if(bulletArray[i].y <= 0){
+            bulletArray.splice(i, 1);
+            i--;
+        }
+    }
 }
 
 function animate() {
@@ -125,12 +206,19 @@ function animate() {
     ctx.fillRect(0,0,canvas.width, canvas.height)
 
     counter++;
+    bulletCounter++;
+
     if(counter >= spawnInterval) {
         particleArray.push(new Particle('grey', 'src/images/mothership.png'));
         counter = 0;
     }
-   
+    
+    if(bulletCounter === 15) {
+        bulletArray.push(new Bullet());
+        bulletCounter = 0;
+    }
     handleParticles();
+    handleBullets();
     requestAnimationFrame(animate);
 }
 
