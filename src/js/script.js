@@ -105,11 +105,14 @@ class Bullet {
         this.x = canvas.width / 2;
         this.y = canvas.height;
         this.size = 5;
-        this.speedY = 2;
+        this.speedY = 3;
         this.color = 'yellow';
     }
 
     update() {
+        if(!is_playing) {
+            return
+        }
         this.y -= this.speedY;
         this.x += lastBullet;
     }
@@ -169,7 +172,6 @@ let reachLeft = true;
 let reachRight = false;
 
 function handleBullets() {
-  
 if(lastBullet < -2) {
     reachLeft = true;
     reachRight = false;
@@ -216,7 +218,15 @@ function animate() {
     }
     handleParticles();
     handleBullets();
+
+    ctx.fillStyle = 'white';
+    ctx.fillRect(canvas.width / 2, canvas.height,40, 20);
+
+
     requestAnimationFrame(animate);
+
+
+
 }
 
 animate();
@@ -225,3 +235,5 @@ lbl_live.innerHTML = `♥️ ${live}`;
 btn_restart.addEventListener('click', ()=> {
     window.location.reload();
 })
+
+
