@@ -220,8 +220,8 @@ function animate() {
     handleBullets();
 
     ctx.fillStyle = 'white';
-    ctx.fillRect(canvas.width / 2, canvas.height,40, 20);
-
+    ctx.fillRect((canvas.width / 2) - 20, canvas.height - 20,40, 20);
+    ctx.fillRect((canvas.width / 2) - 15, canvas.height - 30,30, 30);
 
     requestAnimationFrame(animate);
 
