@@ -347,7 +347,7 @@ function animate() {
     bulletCounter++;
 
     if (counter >= spawnInterval) {
-        particleArray.push(new Particle('grey', 'src/images/mothership.png'));
+        particleArray.push(new Particle('lightblue', 'src/images/mothership.png'));
         counter = 0;
     }
 
