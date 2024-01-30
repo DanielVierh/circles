@@ -47,8 +47,8 @@ canvas.addEventListener('click', (e) => {
             particleArray.splice(i, 1);
             i--;
             spawnInterval--;
-            if (spawnInterval <= 5) {
-                spawnInterval = 5;
+            if (spawnInterval <= 2) {
+                spawnInterval = 2;
             }
             points++;
             new_Live++;
