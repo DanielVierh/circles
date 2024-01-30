@@ -169,7 +169,6 @@ class Bullet {
                 }
                 points++;
                 new_Live++;
-                money++;
                 lbl_money.innerHTML = `$ ${money}`;
                 this.y = canvas.y;
                 if (points === 1) {
@@ -241,7 +240,6 @@ class Tower {
                 }
                 points++;
                 new_Live++;
-                money++;
                 lbl_money.innerHTML = `$ ${money}`;
                 this.bulletY = canvas.height;
                 if (points === 1) {
@@ -358,6 +356,7 @@ function animate() {
     if (new_Live > 50) {
         new_Live = 0;
         live += 5;
+        money += 33;
         lbl_live.innerHTML = `♥️ ${live}`;
     }
 
