@@ -18,9 +18,9 @@ let bulletCounter = 0;
 let lastBullet = 0;
 let reachLeft = true;
 let reachRight = false;
-let money = 100;
+let money = 200;
 let new_Live = 0;
-const tower_cost = 50;
+const tower_cost = 100;
 
 
 window.addEventListener('resize', ()=> {
