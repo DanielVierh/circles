@@ -47,8 +47,8 @@ canvas.addEventListener('click', (e) => {
             particleArray.splice(i, 1);
             i--;
             spawnInterval--;
-            if (spawnInterval <= 2) {
-                spawnInterval = 2;
+            if (spawnInterval <= 0) {
+                spawnInterval = 0;
             }
             points++;
             new_Live++;
@@ -84,7 +84,11 @@ class Particle {
         this.x = Math.floor(Math.random() * max) + min;;
         this.y = 0;
         this.size = Math.random() * 15 + 5;
-        this.speedY = Math.random() * 1;
+        if(live > 200) {
+            this.speedY = Math.random() * 10;
+        }else {
+            this.speedY = Math.random() * 1;
+        }
         this.imageSrc = imageSrc;
         this.image = new Image();
         this.image.onload = () => {
