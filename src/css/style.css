@@ -24,7 +24,7 @@ body {
     left: 0;
     top: 0;
     color: lightgreen;
-    font-size: 2rem;
+    font-size: 1rem;
     font-weight: bold;
     letter-spacing: 2px;
     background-color: black;
@@ -36,7 +36,20 @@ body {
     right: 0;
     top: 0;
     color: teal;
-    font-size: 2rem;
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    background-color: black;
+    padding: 3px;
+}
+
+#lbl_money {
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%);
+    top: 0;
+    color: yellow;
+    font-size: 1rem;
     font-weight: bold;
     letter-spacing: 2px;
     background-color: black;
