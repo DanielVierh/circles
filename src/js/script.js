@@ -84,8 +84,8 @@ class Particle {
         this.x = Math.floor(Math.random() * max) + min;;
         this.y = 0;
         this.size = Math.random() * 15 + 5;
-        if(live > 200) {
-            this.speedY = Math.random() * 10;
+        if(live > 100) {
+            this.speedY = Math.random() * 5;
         }else {
             this.speedY = Math.random() * 1;
         }
