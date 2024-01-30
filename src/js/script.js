@@ -23,7 +23,7 @@ let new_Live = 0;
 const tower_cost = 100;
 
 
-window.addEventListener('resize', ()=> {
+window.addEventListener('resize', () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 });
@@ -33,37 +33,38 @@ let mouse = {
     y: undefined,
 }
 
-canvas.addEventListener('click', (e)=> {
+canvas.addEventListener('click', (e) => {
     mouse.x = e.x;
     mouse.y = e.y;
     // Squash circles
-    for(let i = 0; i < particleArray.length; i++) {
+    for (let i = 0; i < particleArray.length; i++) {
 
-        if( mouse.x < particleArray[i].x + 20 &&
+        if (mouse.x < particleArray[i].x + 20 &&
             mouse.x + 30 > particleArray[i].x &&
             mouse.y < particleArray[i].y + 20 &&
             mouse.y + 30 > particleArray[i].y) {
+
             particleArray.splice(i, 1);
             i--;
             spawnInterval--;
-            if(spawnInterval <= 5) {
-                spawnInterval = 5;  
+            if (spawnInterval <= 5) {
+                spawnInterval = 5;
             }
             points++;
             new_Live++;
-            money ++;
             lbl_money.innerHTML = `$ ${money}`;
-            if(points === 1) {
+            if (points === 1) {
                 lbl_points.innerHTML = `${points} Punkt`
-            }else {
+            } else {
                 lbl_points.innerHTML = `${points} Punkte`
             }
+
         }
     }
 
     // Build a Tower
     const allowedBuildArea = canvas.height - 30;
-    if(mouse.y > allowedBuildArea && money >= tower_cost) {
+    if (mouse.y > allowedBuildArea && money >= tower_cost) {
         towerArray.push(new Tower(mouse.x, canvas.height - 20));
         money -= tower_cost;
         lbl_money.innerHTML = `$ ${money}`;
@@ -81,7 +82,7 @@ class Particle {
     constructor(color, imageSrc) {
         this.color = color;
         this.x = Math.floor(Math.random() * max) + min;;
-        this.y =  0;
+        this.y = 0;
         this.size = Math.random() * 15 + 5;
         this.speedY = Math.random() * 1;
         this.imageSrc = imageSrc;
@@ -99,14 +100,14 @@ class Particle {
     }
 
     update() {
-        if(!is_playing) {
+        if (!is_playing) {
             return
         }
         this.y += this.speedY;
     }
 
     draw() {
-        if(!is_playing) {
+        if (!is_playing) {
             return
         }
         // Überprüfen, ob das Bild geladen ist, bevor es gezeichnet wird
@@ -135,7 +136,7 @@ class Bullet {
     }
 
     update() {
-        if(!is_playing) {
+        if (!is_playing) {
             return
         }
         this.y -= this.speedY;
@@ -150,26 +151,26 @@ class Bullet {
     }
 
     collisionDetection() {
-        for(let i = 0; i < particleArray.length; i++) {
+        for (let i = 0; i < particleArray.length; i++) {
 
-            if( this.x < particleArray[i].x + 20 &&
+            if (this.x < particleArray[i].x + 20 &&
                 this.x > particleArray[i].x &&
                 this.y < particleArray[i].y + 20 &&
                 this.y > particleArray[i].y) {
                 particleArray.splice(i, 1);
                 i--;
                 spawnInterval--;
-                if(spawnInterval <= 5) {
-                    spawnInterval = 5;  
+                if (spawnInterval <= 5) {
+                    spawnInterval = 5;
                 }
                 points++;
                 new_Live++;
-                money ++;
+                money++;
                 lbl_money.innerHTML = `$ ${money}`;
                 this.y = canvas.y;
-                if(points === 1) {
+                if (points === 1) {
                     lbl_points.innerHTML = `${points} Punkt`
-                }else {
+                } else {
                     lbl_points.innerHTML = `${points} Punkte`
                 }
             }
@@ -198,17 +199,17 @@ class Tower {
 
     //* draw Tower
     draw() {
-        ctx.fillStyle = this.color ;
+        ctx.fillStyle = this.color;
         ctx.fillRect(this.x, this.y, this.width, this.height)
     }
 
     update() {
-        if(!is_playing) {
+        if (!is_playing) {
             return
         }
         this.bulletY -= this.bulletSpeedY;
         //this.bulletX += this.lastBullet;
-        if(this.bulletY <= 0) {
+        if (this.bulletY <= 0) {
             this.bulletY = canvas.height;
             this.bulletX = this.x + (this.width / 2) + (Math.random() * 2) - 1;
         }
@@ -222,26 +223,26 @@ class Tower {
     }
 
     collisionDetection() {
-        for(let i = 0; i < particleArray.length; i++) {
+        for (let i = 0; i < particleArray.length; i++) {
 
-            if( this.bulletX < particleArray[i].x + 20 &&
+            if (this.bulletX < particleArray[i].x + 20 &&
                 this.bulletX + 30 > particleArray[i].x &&
                 this.bulletY < particleArray[i].y + 20 &&
                 this.bulletY + 30 > particleArray[i].y) {
                 particleArray.splice(i, 1);
                 i--;
                 spawnInterval--;
-                if(spawnInterval <= 5) {
-                    spawnInterval = 5;  
+                if (spawnInterval <= 5) {
+                    spawnInterval = 5;
                 }
                 points++;
                 new_Live++;
-                money ++;
+                money++;
                 lbl_money.innerHTML = `$ ${money}`;
                 this.bulletY = canvas.height;
-                if(points === 1) {
+                if (points === 1) {
                     lbl_points.innerHTML = `${points} Punkt`
-                }else {
+                } else {
                     lbl_points.innerHTML = `${points} Punkte`
                 }
             }
@@ -255,16 +256,16 @@ class Tower {
 //////////////////////////////////////////
 
 function handleParticles() {
-    for(let i = 0; i < particleArray.length; i++) {
+    for (let i = 0; i < particleArray.length; i++) {
         particleArray[i].update();
         particleArray[i].draw();
 
-        if(particleArray[i].y >= canvas.height){
+        if (particleArray[i].y >= canvas.height) {
             particleArray.splice(i, 1);
             i--;
             live--;
             lbl_live.innerHTML = `♥️ ${live}`;
-            if(live === 0) {
+            if (live === 0) {
                 document.getElementById('modal').classList.add('active');
                 is_playing = false;
             }
@@ -277,32 +278,32 @@ function handleParticles() {
 //////////////////////////////////////////
 
 function handleTowers() {
-    for(let i = 0; i < towerArray.length; i++) {
+    for (let i = 0; i < towerArray.length; i++) {
         let tower_reachLeft = true;
         let tower_reachRight = false;
         towerArray[i].draw();
         towerArray[i].update();
         towerArray[i].bulletdraw();
         towerArray[i].collisionDetection();
-        
-        if(bulletCounter === 15) {
+
+        if (bulletCounter === 15) {
             bulletArray.push(new Bullet());
             bulletCounter = 0;
         }
-        
-        if(towerArray[i].lastBullet < -2) {
+
+        if (towerArray[i].lastBullet < -2) {
             tower_reachLeft = true;
             tower_reachRight = false;
         }
-        
-        if(towerArray[i].lastBullet > 2) {
+
+        if (towerArray[i].lastBullet > 2) {
             tower_reachLeft = false;
             tower_reachRight = true;
         }
-        if(tower_reachLeft === true && tower_reachRight === false) {
+        if (tower_reachLeft === true && tower_reachRight === false) {
             towerArray[i].lastBullet += .003;
         }
-        if(tower_reachLeft === false && tower_reachRight === true) {
+        if (tower_reachLeft === false && tower_reachRight === true) {
             towerArray[i].lastBullet -= .003;
         }
     }
@@ -310,27 +311,27 @@ function handleTowers() {
 
 
 function handleBullets() {
-if(lastBullet < -2) {
-    reachLeft = true;
-    reachRight = false;
-}
+    if (lastBullet < -2) {
+        reachLeft = true;
+        reachRight = false;
+    }
 
-if(lastBullet > 2) {
-    reachLeft = false;
-    reachRight = true;
-}
-if(reachLeft === true && reachRight === false) {
-    lastBullet += .003;
-}
-if(reachLeft === false && reachRight === true) {
-    lastBullet -= .003;
-}
-    for(let i = 0; i < bulletArray.length; i++) {
+    if (lastBullet > 2) {
+        reachLeft = false;
+        reachRight = true;
+    }
+    if (reachLeft === true && reachRight === false) {
+        lastBullet += .003;
+    }
+    if (reachLeft === false && reachRight === true) {
+        lastBullet -= .003;
+    }
+    for (let i = 0; i < bulletArray.length; i++) {
         bulletArray[i].update();
         bulletArray[i].draw();
         bulletArray[i].collisionDetection();
 
-        if(bulletArray[i].y <= 0){
+        if (bulletArray[i].y <= 0) {
             bulletArray.splice(i, 1);
             i--;
         }
@@ -340,23 +341,23 @@ if(reachLeft === false && reachRight === true) {
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = 'rgba(0,0,0,0)';
-    ctx.fillRect(0,0,canvas.width, canvas.height)
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
 
     counter++;
     bulletCounter++;
 
-    if(counter >= spawnInterval) {
+    if (counter >= spawnInterval) {
         particleArray.push(new Particle('grey', 'src/images/mothership.png'));
         counter = 0;
     }
 
-    if(new_Live > 50) {
+    if (new_Live > 50) {
         new_Live = 0;
         live += 5;
         lbl_live.innerHTML = `♥️ ${live}`;
     }
-    
-    if(bulletCounter === 15) {
+
+    if (bulletCounter === 15) {
         bulletArray.push(new Bullet());
         bulletCounter = 0;
     }
@@ -365,8 +366,8 @@ function animate() {
     handleTowers();
 
     ctx.fillStyle = 'white';
-    ctx.fillRect((canvas.width / 2) - 20, canvas.height - 20,40, 20);
-    ctx.fillRect((canvas.width / 2) - 15, canvas.height - 30,30, 30);
+    ctx.fillRect((canvas.width / 2) - 20, canvas.height - 20, 40, 20);
+    ctx.fillRect((canvas.width / 2) - 15, canvas.height - 30, 30, 30);
 
     requestAnimationFrame(animate);
 
@@ -378,7 +379,7 @@ animate();
 lbl_live.innerHTML = `♥️ ${live}`;
 lbl_money.innerHTML = `$ ${money}`;
 
-btn_restart.addEventListener('click', ()=> {
+btn_restart.addEventListener('click', () => {
     window.location.reload();
 })
 
