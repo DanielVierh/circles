@@ -312,7 +312,8 @@ function handleTowers() {
 }
 
 
-function handleBullets() {
+function handleBullets(p_reachLeft = true, p_reachRight = false) {
+
     if (lastBullet < -2) {
         reachLeft = true;
         reachRight = false;
@@ -322,6 +323,10 @@ function handleBullets() {
         reachLeft = false;
         reachRight = true;
     }
+
+    reachLeft = p_reachLeft;
+    reachRight = p_reachRight; 
+
     if (reachLeft === true && reachRight === false) {
         lastBullet += .003;
     }
@@ -340,45 +345,7 @@ function handleBullets() {
     }
 }
 
-function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = 'rgba(0,0,0,0)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-    counter++;
-    bulletCounter++;
-
-    if (counter >= spawnInterval) {
-        particleArray.push(new Particle('lightblue', 'src/images/mothership.png'));
-        counter = 0;
-    }
-
-    if (new_Live > 50) {
-        new_Live = 0;
-        live += 5;
-        money += 33;
-        lbl_live.innerHTML = `♥️ ${live}`;
-    }
-
-    if (bulletCounter === 15) {
-        bulletArray.push(new Bullet());
-        bulletCounter = 0;
-    }
-    handleParticles();
-    handleBullets();
-    handleTowers();
-
-    ctx.fillStyle = 'white';
-    ctx.fillRect((canvas.width / 2) - 20, canvas.height - 20, 40, 20);
-    ctx.fillRect((canvas.width / 2) - 15, canvas.height - 30, 30, 30);
-
-    requestAnimationFrame(animate);
-
-
-
-}
-
-animate();
 lbl_live.innerHTML = `♥️ ${live}`;
 lbl_money.innerHTML = `$ ${money}`;
 
@@ -387,3 +354,155 @@ btn_restart.addEventListener('click', () => {
 })
 
 
+    ////////////////////////////////////////////////////////
+
+    const keys = {
+        w: {
+            pressed: false,
+        },
+        a: {
+            pressed: false,
+        },
+        s: {
+            pressed: false,
+        },
+        d: {
+            pressed: false,
+        },
+    };
+
+    let lastKey = '';
+    window.addEventListener('keydown', (e) => {
+        switch (e.key) {
+            case 'w':
+                keys.w.pressed = true;
+                lastKey = 'w';
+                break;
+            case 'a':
+                keys.a.pressed = true;
+                lastKey = 'a';
+                break;
+            case 's':
+                keys.s.pressed = true;
+                lastKey = 's';
+                break;
+            case 'd':
+                keys.d.pressed = true;
+                lastKey = 'd';
+                break;
+
+            default:
+                break;
+        }
+    });
+
+
+    // Klasse um gedrückte Taste triggern
+    class ClickAndHold {
+        constructor(EventTarget, callback) {
+            this.EventTarget = EventTarget;
+            this.callback = callback;
+            this.isHeld = false;
+            this.activeHoldTimeoutId = null;
+
+            ['mousedown', 'touchstart'].forEach((type) => {
+                this.EventTarget.addEventListener(
+                    type,
+                    this._onHoldStart.bind(this),
+                );
+            });
+
+            [
+                'mouseup',
+                'mouseleave',
+                'mouseout',
+                'touchend',
+                'touchcancel',
+            ].forEach((type) => {
+                this.EventTarget.addEventListener(
+                    type,
+                    this._onHoldEnd.bind(this),
+                );
+            });
+        }
+
+        _onHoldStart() {
+            this.isHeld = true;
+
+            this.activeHoldTimeoutId = setTimeout(() => {
+                if (this.isHeld) {
+                    this.callback();
+                }
+            }, 200);
+        }
+
+        _onHoldEnd() {
+            this.isHeld = false;
+            clearTimeout(this.activeHoldTimeoutId);
+            keys.w.pressed = false;
+            keys.a.pressed = false;
+            keys.s.pressed = false;
+            keys.d.pressed = false;
+        }
+    }
+
+    const leftBtn = document.getElementById('left');
+    const rightBtn = document.getElementById('right');
+
+
+    new ClickAndHold(leftBtn, () => {
+        keys.a.pressed = true;
+        lastKey = 'a';
+    });
+
+    new ClickAndHold(rightBtn, () => {
+        keys.d.pressed = true;
+        lastKey = 'd';
+    });
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = 'rgba(0,0,0,0)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
+    
+        counter++;
+        bulletCounter++;
+    
+        if (counter >= spawnInterval) {
+            particleArray.push(new Particle('lightblue', 'src/images/mothership.png'));
+            counter = 0;
+        }
+    
+        if (new_Live > 50) {
+            new_Live = 0;
+            live += 5;
+            money += 33;
+            lbl_live.innerHTML = `♥️ ${live}`;
+        }
+    
+        if (bulletCounter === 15) {
+            bulletArray.push(new Bullet());
+            bulletCounter = 0;
+        }
+        handleParticles();
+        handleTowers();
+    
+        ctx.fillStyle = 'white';
+        ctx.fillRect((canvas.width / 2) - 20, canvas.height - 20, 40, 20);
+        ctx.fillRect((canvas.width / 2) - 15, canvas.height - 30, 30, 30);
+    
+        requestAnimationFrame(animate);
+    
+        
+        if (keys.a.pressed && lastKey === 'a') {
+            handleBullets(false, true)
+        }
+
+        if (keys.d.pressed && lastKey === 'd') {
+            handleBullets(true, false)
+        }
+    
+    
+    }
+    
+    animate();
