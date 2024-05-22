@@ -6,6 +6,7 @@ const lbl_money = document.getElementById('lbl_money');
 const btn_restart = document.getElementById('btn_restart');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
+//* ANCHOR - Global Var
 let particleArray = [];
 let bulletArray = [];
 let towerArray = [];
@@ -22,21 +23,23 @@ let money = 200;
 let new_Live = 0;
 const tower_cost = 100;
 
-
-window.addEventListener('resize', () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-});
-
 let mouse = {
     x: undefined,
     y: undefined,
 }
 
+//* ANCHOR - Resize
+window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
+
+
+//* ANCHOR - Click Event Listener
 canvas.addEventListener('click', (e) => {
     mouse.x = e.x;
     mouse.y = e.y;
-    // Squash circles
+    //* ANCHOR Squash circles
     for (let i = 0; i < particleArray.length; i++) {
 
         if (mouse.x < particleArray[i].x + 20 &&
@@ -62,7 +65,7 @@ canvas.addEventListener('click', (e) => {
         }
     }
 
-    // Build a Tower
+    //* ANCHOR - Build a Tower
     const allowedBuildArea = canvas.height - 30;
     if (mouse.y > allowedBuildArea && money >= tower_cost) {
         towerArray.push(new Tower(mouse.x, canvas.height - 20));
@@ -76,7 +79,7 @@ const min = (window.innerWidth * 0.2);
 const max = (window.innerWidth - (window.innerWidth * 0.2))
 
 //////////////////////////////////////////
-//* Klasse für Ufos aka Particles
+//* ANCHOR - Klasse für Ufos aka Particles
 //////////////////////////////////////////
 class Particle {
     constructor(color, imageSrc) {
@@ -128,7 +131,7 @@ class Particle {
 }
 
 //////////////////////////////////////////
-//* Klasse für Bullet
+//* ANCHOR - Klasse für Bullet
 //////////////////////////////////////////
 class Bullet {
     constructor() {
@@ -183,7 +186,7 @@ class Bullet {
 
 
 //////////////////////////////////////////
-//* Klasse für Tower
+//* ANCHOR - Klasse für Tower
 //////////////////////////////////////////
 class Tower {
     constructor(x, y) {
@@ -254,7 +257,7 @@ class Tower {
 }
 
 //////////////////////////////////////////
-//* Handle Particles
+//* ANCHOR - Handle Particles
 //////////////////////////////////////////
 
 function handleParticles() {
@@ -276,7 +279,7 @@ function handleParticles() {
 }
 
 //////////////////////////////////////////
-//* Handle Tower
+//* ANCHOR - Handle Tower
 //////////////////////////////////////////
 
 function handleTowers() {
@@ -311,6 +314,8 @@ function handleTowers() {
     }
 }
 
+//////////////////////////////////////////
+//* ANCHOR - Handle Bullets
 
 function handleBullets(p_reachLeft = true, p_reachRight = false) {
 
@@ -353,8 +358,9 @@ btn_restart.addEventListener('click', () => {
     window.location.reload();
 })
 
-
-    ////////////////////////////////////////////////////////
+//////////////////////////////////////////
+//* ANCHOR - Keys
+////////////////////////////////////////////////////////
 
     const keys = {
         w: {
@@ -397,7 +403,8 @@ btn_restart.addEventListener('click', () => {
     });
 
 
-    // Klasse um gedrückte Taste triggern
+   //////////////////////////////////////////
+   //* ANCHOR - Klasse um gedrückte Taste triggern
     class ClickAndHold {
         constructor(EventTarget, callback) {
             this.EventTarget = EventTarget;
@@ -460,6 +467,8 @@ btn_restart.addEventListener('click', () => {
         lastKey = 'd';
     });
 
+    //////////////////////////////////////////
+    //* ANCHOR - Animate
     function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = 'rgba(0,0,0,0)';
