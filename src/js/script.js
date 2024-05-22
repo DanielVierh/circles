@@ -12,7 +12,7 @@ let bulletArray = [];
 let towerArray = [];
 let counter = 0;
 let spawnInterval = 80;
-let live = 30;
+let live = 100;
 let points = 0;
 let is_playing = true;
 let bulletCounter = 0;
@@ -76,7 +76,7 @@ canvas.addEventListener('click', (e) => {
 
 
 const min = (window.innerWidth * 0.2);
-const max = (window.innerWidth - (window.innerWidth * 0.2))
+const max = (window.innerWidth - (window.innerWidth * 0.4))
 
 //////////////////////////////////////////
 //* ANCHOR - Klasse für Ufos aka Particles
@@ -88,7 +88,7 @@ class Particle {
         this.y = 0;
         this.size = Math.random() * 15 + 5;
         if(live > 100) {
-            this.speedY = Math.random() * 5;
+            this.speedY = Math.random() * 2;
         }else {
             this.speedY = Math.random() * 1;
         }
@@ -105,6 +105,7 @@ class Particle {
         this.image.src = this.imageSrc;
         this.isImageLoaded = false;
     }
+
 
     update() {
         if (!is_playing) {
@@ -138,7 +139,7 @@ class Bullet {
         this.x = canvas.width / 2;
         this.y = canvas.height;
         this.size = 3;
-        this.speedY = 5;
+        this.speedY = 8;
         this.color = 'yellow';
     }
 
@@ -316,6 +317,7 @@ function handleTowers() {
 
 //////////////////////////////////////////
 //* ANCHOR - Handle Bullets
+//////////////////////////////////////////
 
 function handleBullets(p_reachLeft = true, p_reachRight = false) {
 
@@ -333,10 +335,10 @@ function handleBullets(p_reachLeft = true, p_reachRight = false) {
     reachRight = p_reachRight; 
 
     if (reachLeft === true && reachRight === false) {
-        lastBullet += .003;
+        lastBullet += .008;
     }
     if (reachLeft === false && reachRight === true) {
-        lastBullet -= .003;
+        lastBullet -= .008;
     }
     for (let i = 0; i < bulletArray.length; i++) {
         bulletArray[i].update();
@@ -489,7 +491,7 @@ btn_restart.addEventListener('click', () => {
             lbl_live.innerHTML = `♥️ ${live}`;
         }
     
-        if (bulletCounter === 15) {
+        if (bulletCounter === 7) {
             bulletArray.push(new Bullet());
             bulletCounter = 0;
         }
